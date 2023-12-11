@@ -11,9 +11,14 @@ import java.util.List;
 import java.util.Map;
 
 public class AddressBookDaoFileImpl implements AddressBookDao {
+
+
+
+
     static Map<String, Address> addressBook;
-    final String fileName = "adrressbook.txt";
+    final String fileName;
     public AddressBookDaoFileImpl() {
+        this.fileName = "adrressbook.txt";
         addressBook = new HashMap();
         try {
             // Check if the file exists
@@ -27,6 +32,26 @@ public class AddressBookDaoFileImpl implements AddressBookDao {
             e.printStackTrace();
         }
     }
+
+    public AddressBookDaoFileImpl(String fileName) {
+        this.fileName = fileName;
+        addressBook = new HashMap();
+        try {
+            // Check if the file exists
+            if (!Files.exists(Path.of(fileName))) {
+                // If not, create the file
+                Path path = Paths.get(fileName);
+                Files.createFile(path);
+
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public static Map<String, Address> getAddressBook() {
+        return addressBook;
+    }
+
     public List<Address> getAddressBookAsList(){
         return addressBook.values().stream().toList();
     }
